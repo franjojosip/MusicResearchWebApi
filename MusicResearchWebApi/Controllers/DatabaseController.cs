@@ -64,7 +64,7 @@ namespace MusicResearchWebApi.Controllers
                             {
                                 songs.Add(new SongRestModel() { Id = reader.GetString(0), Name = reader.GetString(1), Genre = reader.GetString(2) });
                             }
-                        }
+                        } 
                     }
                 }
             }
@@ -144,13 +144,13 @@ namespace MusicResearchWebApi.Controllers
 
         [HttpPut]
         [Route("{id}", Name="Song-Put" )]
-        public HttpResponseMessage UpdateSong(string id, string name)
+        public HttpResponseMessage UpdateSong([FromBody]Song model)
         {
             try
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    string sql = $"Update Song SET Song.Name = '{name}' WHERE Song.Id = '{id}'";
+                    string sql = $"Update Song SET Song.Name = '{model.Name}' WHERE Song.Id = '{model.Id}'";
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
                         connection.Open();
