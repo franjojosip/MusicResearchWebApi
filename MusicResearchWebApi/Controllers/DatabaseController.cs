@@ -202,7 +202,7 @@ namespace MusicResearchWebApi.Controllers
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("", Name = "Song-Post")]
         public HttpResponseMessage PostSong([FromUri]string name, string genreId)
         {
