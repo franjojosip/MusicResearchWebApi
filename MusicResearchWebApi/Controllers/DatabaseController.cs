@@ -204,7 +204,7 @@ namespace MusicResearchWebApi.Controllers
 
         [HttpPost]
         [Route("", Name = "Song-Post")]
-        public HttpResponseMessage PostSong(Song model)
+        public HttpResponseMessage PostSong([FromBody]Song model)
         {
             try
             {

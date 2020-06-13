@@ -8,7 +8,7 @@ namespace MusicResearchWebApi.DatabaseModels
 
         public string Name { get; set; }
 
-        public int GenreId { get; set; }
+        public Int32 GenreId { get; set; }
 
         public DateTime DateCreated { get; set; }
     }
