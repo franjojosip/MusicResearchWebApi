@@ -110,7 +110,7 @@ namespace MusicResearchWebApi.Controllers
         }
 
         [HttpGet]
-        [Route("", Name = "Genre-Get-By-Name")]
+        [Route("genre", Name = "Genre-Get-By-Name")]
         public HttpResponseMessage GetGenre([FromUri]string name)
         {
             Genre genre = new Genre();
@@ -118,7 +118,7 @@ namespace MusicResearchWebApi.Controllers
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    string sql = $"SELECT Id FROM Genre WHERE Name = '{name}')";
+                    string sql = $"SELECT Id, Name FROM Genre WHERE Name like '{name}'";
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
                         connection.Open();
