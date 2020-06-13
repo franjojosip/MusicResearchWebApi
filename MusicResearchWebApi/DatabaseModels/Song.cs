@@ -4,7 +4,7 @@ namespace MusicResearchWebApi.DatabaseModels
 {
     public class Song
     {
-        public string Id { get; set; }
+        public Int32 Id { get; set; }
 
         public string Name { get; set; }
 
