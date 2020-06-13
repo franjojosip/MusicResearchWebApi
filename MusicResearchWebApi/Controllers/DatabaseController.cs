@@ -204,13 +204,13 @@ namespace MusicResearchWebApi.Controllers
 
         [HttpGet]
         [Route("", Name = "Song-Post")]
-        public HttpResponseMessage PostSong([FromBody]Song model)
+        public HttpResponseMessage PostSong([FromUri]string name, string genreId)
         {
             try
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    string sql = $"INSERT INTO Song (Id, Name, GenreId, DateCreated) VALUES (newid(), '{model.Name}', {model.GenreId}, getdate())";
+                    string sql = $"INSERT INTO Song (Id, Name, GenreId, DateCreated) VALUES (newid(), '{name}', {genreId}, getdate())";
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
                         connection.Open();
