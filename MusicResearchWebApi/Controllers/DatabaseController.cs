@@ -210,7 +210,7 @@ namespace MusicResearchWebApi.Controllers
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    string sql = $"INSERT INTO Song (Id, Name, GenreId, DateCreated) VALUES (newguid(), '{model.Name}', {model.GenreId}, getdate())";
+                    string sql = $"INSERT INTO Song (Id, Name, GenreId, DateCreated) VALUES (newid(), '{model.Name}', {model.GenreId}, getdate())";
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
                         connection.Open();
