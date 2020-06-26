@@ -11,6 +11,9 @@ using System.Net.Http.Headers;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Web.Script.Serialization;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using MusicResearchWebApi.DatabaseModels;
 
 namespace MusicResearchWebApi.Controllers
 {
@@ -217,15 +220,19 @@ namespace MusicResearchWebApi.Controllers
 
             HttpResponseMessage response = await client.PostAsJsonAsync("", scoreRequest);
 
-            string result = await response.Content.ReadAsStringAsync();
 
-            return result;
+            if (response.IsSuccessStatusCode)
+            {
+                string result = await response.Content.ReadAsStringAsync();
+                JObject jObject = JObject.Parse(result);
+                JToken jUser = jObject["Results"]["output1"]["value"]["Values"][0].Last;
+                return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(jUser.ToString());
+            }
+            else
+            {
+                return String.Empty;
+            }
         }
-
-
-
-
-
 
 
     }
