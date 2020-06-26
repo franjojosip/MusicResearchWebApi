@@ -40,7 +40,7 @@ namespace MusicResearchWebApi.Controllers
             var response = GetMLParameterFromBlobPath(json);
             if (!string.IsNullOrEmpty(response))
             {
-                AzureSongModel model = MapResponseToAzureSongModel(response);
+                AzureSongModel model = MapResponseToAzureSongModel(response, id);
 
                 var songGenre = await GetSongGenreFromAzureML(model);
 
@@ -109,7 +109,7 @@ namespace MusicResearchWebApi.Controllers
             return "";
         }
 
-        private AzureSongModel MapResponseToAzureSongModel(string message)
+        private AzureSongModel MapResponseToAzureSongModel(string message, Guid id)
         {
             AzureSongModel songModel = new AzureSongModel();
             string[] stringValues = message.Split(',');
@@ -124,6 +124,7 @@ namespace MusicResearchWebApi.Controllers
                     i++;
                 }
 
+                songModel.Song_name = id.ToString();
                 songModel.Song_length = decimalValues[0];
                 songModel.Tempo = decimalValues[1];
                 songModel.Total_beats = decimalValues[2];
@@ -184,25 +185,25 @@ namespace MusicResearchWebApi.Controllers
                             "input1",
                             new StringTable()
                             {
-                                ColumnNames = new string[] {"song_length", "tempo", "total_beats", "average_beats", "zcr_mean", "zcr_var", "zcr_std", "cent_mean", "cent_var", "cent_std", "rolloff_mean",
+                                ColumnNames = new string[] {"song_name", "song_length", "tempo", "total_beats", "average_beats", "zcr_mean", "zcr_var", "zcr_std", "cent_mean", "cent_var", "cent_std", "rolloff_mean",
                                     "rolloff_var", "rolloff_std", "chroma_mean", "chroma_var", "chroma_std", "chroma_cqt_mean", "chroma_cqt_var", "chroma_cqt_std", "chroma_cens_mean", "chroma_cens_var",
                                     "chroma_cens_std", "mfccs_mean", "mfccs_var", "mfccs_std", "mfcc_delta_mean", "mfcc_delta_var", "mfcc_delta_std", "mel_mean", "mel_var", "mel_std", "tonnetz_mean",
                                     "tonnetz_var", "tonnetz_std", "spec_bw_mean", "spec_bw_var", "spec_bw_std", "spec_con_mean", "spec_con_var", "spec_con_std", "harmonic_mean", "harmonic_var",
-                                    "harmonic_std", "percussive_mean", "percussive_var", "percussive_std"},
-                                Values = new string[,] {  { model.Song_length.ToString(), model.Tempo.ToString(), model.Total_beats.ToString(), model.Average_beats.ToString(), model.Zcr_mean.ToString(), model.Zcr_var.ToString(), model.Zcr_std.ToString(),
+                                    "harmonic_std", "percussive_mean", "percussive_var", "percussive_std", "genre"},
+                                Values = new string[,] {  { model.Song_name, model.Song_length.ToString(), model.Tempo.ToString(), model.Total_beats.ToString(), model.Average_beats.ToString(), model.Zcr_mean.ToString(), model.Zcr_var.ToString(), model.Zcr_std.ToString(),
                                         model.Cent_mean.ToString(), model.Cent_var.ToString(), model.Cent_std.ToString(), model.Rolloff_mean.ToString(), model.Rolloff_var.ToString(), model.Rolloff_std.ToString(), model.Chroma_mean.ToString(),
                                         model.Chroma_var.ToString(), model.Chroma_std.ToString(), model.Chroma_cqt_mean.ToString(), model.Chroma_cqt_var.ToString(), model.Chroma_cqt_std.ToString(), model.Chroma_cens_mean.ToString(),
                                         model.Chroma_cens_var.ToString(), model.Chroma_cens_std.ToString(), model.Mfccs_mean.ToString(), model.Mfccs_var.ToString(), model.Mfccs_std.ToString(), model.Mfcc_delta_mean.ToString(),
                                         model.Mfcc_delta_var.ToString(), model.Mfcc_delta_std.ToString(), model.Mel_mean.ToString(), model.Mel_var.ToString(), model.Mel_std.ToString(), model.Tonnetz_mean.ToString(), model.Tonnetz_var.ToString(),
                                         model.Tonnetz_std.ToString(), model.Spec_bw_mean.ToString(), model.Spec_bw_var.ToString(), model.Spec_bw_std.ToString(), model.Spec_con_mean.ToString(), model.Spec_con_var.ToString(), model.Spec_con_std.ToString(),
-                                        model.Harmonic_mean.ToString(), model.Harmonic_var.ToString(), model.Harmonic_std.ToString(), model.Percussive_mean.ToString(), model.Percussive_var.ToString(), model.Percussive_std.ToString() }, 
-                                        { model.Song_length.ToString(), model.Tempo.ToString(), model.Total_beats.ToString(), model.Average_beats.ToString(), model.Zcr_mean.ToString(), model.Zcr_var.ToString(), model.Zcr_std.ToString(),
+                                        model.Harmonic_mean.ToString(), model.Harmonic_var.ToString(), model.Harmonic_std.ToString(), model.Percussive_mean.ToString(), model.Percussive_var.ToString(), model.Percussive_std.ToString(), "" }, 
+                                        { model.Song_name, model.Song_length.ToString(), model.Tempo.ToString(), model.Total_beats.ToString(), model.Average_beats.ToString(), model.Zcr_mean.ToString(), model.Zcr_var.ToString(), model.Zcr_std.ToString(),
                                         model.Cent_mean.ToString(), model.Cent_var.ToString(), model.Cent_std.ToString(), model.Rolloff_mean.ToString(), model.Rolloff_var.ToString(), model.Rolloff_std.ToString(), model.Chroma_mean.ToString(),
                                         model.Chroma_var.ToString(), model.Chroma_std.ToString(), model.Chroma_cqt_mean.ToString(), model.Chroma_cqt_var.ToString(), model.Chroma_cqt_std.ToString(), model.Chroma_cens_mean.ToString(),
                                         model.Chroma_cens_var.ToString(), model.Chroma_cens_std.ToString(), model.Mfccs_mean.ToString(), model.Mfccs_var.ToString(), model.Mfccs_std.ToString(), model.Mfcc_delta_mean.ToString(),
                                         model.Mfcc_delta_var.ToString(), model.Mfcc_delta_std.ToString(), model.Mel_mean.ToString(), model.Mel_var.ToString(), model.Mel_std.ToString(), model.Tonnetz_mean.ToString(), model.Tonnetz_var.ToString(),
                                         model.Tonnetz_std.ToString(), model.Spec_bw_mean.ToString(), model.Spec_bw_var.ToString(), model.Spec_bw_std.ToString(), model.Spec_con_mean.ToString(), model.Spec_con_var.ToString(), model.Spec_con_std.ToString(),
-                                        model.Harmonic_mean.ToString(), model.Harmonic_var.ToString(), model.Harmonic_std.ToString(), model.Percussive_mean.ToString(), model.Percussive_var.ToString(), model.Percussive_std.ToString() },  }
+                                        model.Harmonic_mean.ToString(), model.Harmonic_var.ToString(), model.Harmonic_std.ToString(), model.Percussive_mean.ToString(), model.Percussive_var.ToString(), model.Percussive_std.ToString() , "" },  }
                             }
                         },
                     },
