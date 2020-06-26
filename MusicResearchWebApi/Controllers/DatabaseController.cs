@@ -11,7 +11,7 @@ namespace MusicResearchWebApi.Controllers
     [RoutePrefix("db")]
     public class DatabaseController : ApiController
     {
-        private readonly string connectionString = ConfigurationManager.AppSettings["dbConnectionString"];
+        private readonly string connectionString = "Server=tcp:musicresearch.database.windows.net,1433;Initial Catalog=musicresearchDB;Persist Security Info=False;User ID=musicresearch;Password=Ferit123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";// ConfigurationManager.AppSettings["dbConnectionString"];
 
         [HttpGet]
         [Route("genres", Name="Get-Genres")]
@@ -210,7 +210,7 @@ namespace MusicResearchWebApi.Controllers
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    string sql = $"INSERT INTO Song (Id, Name, GenreId, DateCreated) VALUES (newid(), '{model.Name}', {model.GenreId}, getdate())";
+                    string sql = $"INSERT INTO Song (Id, Name, GenreId, DateCreated) VALUES ('{model.Id}', '{model.Name}', {model.GenreId}, getdate())";
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
                         connection.Open();

@@ -199,7 +199,7 @@ namespace MusicResearchWebApi.Controllers
                                         model.Chroma_cens_var.ToString(), model.Chroma_cens_std.ToString(), model.Mfccs_mean.ToString(), model.Mfccs_var.ToString(), model.Mfccs_std.ToString(), model.Mfcc_delta_mean.ToString(),
                                         model.Mfcc_delta_var.ToString(), model.Mfcc_delta_std.ToString(), model.Mel_mean.ToString(), model.Mel_var.ToString(), model.Mel_std.ToString(), model.Tonnetz_mean.ToString(), model.Tonnetz_var.ToString(),
                                         model.Tonnetz_std.ToString(), model.Spec_bw_mean.ToString(), model.Spec_bw_var.ToString(), model.Spec_bw_std.ToString(), model.Spec_con_mean.ToString(), model.Spec_con_var.ToString(), model.Spec_con_std.ToString(),
-                                        model.Harmonic_mean.ToString(), model.Harmonic_var.ToString(), model.Harmonic_std.ToString(), model.Percussive_mean.ToString(), model.Percussive_var.ToString(), model.Percussive_std.ToString(), "" }, 
+                                        model.Harmonic_mean.ToString(), model.Harmonic_var.ToString(), model.Harmonic_std.ToString(), model.Percussive_mean.ToString(), model.Percussive_var.ToString(), model.Percussive_std.ToString(), "" },
                                         { model.Song_name, model.Song_length.ToString(), model.Tempo.ToString(), model.Total_beats.ToString(), model.Average_beats.ToString(), model.Zcr_mean.ToString(), model.Zcr_var.ToString(), model.Zcr_std.ToString(),
                                         model.Cent_mean.ToString(), model.Cent_var.ToString(), model.Cent_std.ToString(), model.Rolloff_mean.ToString(), model.Rolloff_var.ToString(), model.Rolloff_std.ToString(), model.Chroma_mean.ToString(),
                                         model.Chroma_var.ToString(), model.Chroma_std.ToString(), model.Chroma_cqt_mean.ToString(), model.Chroma_cqt_var.ToString(), model.Chroma_cqt_std.ToString(), model.Chroma_cens_mean.ToString(),
@@ -214,12 +214,10 @@ namespace MusicResearchWebApi.Controllers
                 {
                 }
             };
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", azureMLApiKey);
 
-            client.BaseAddress = new Uri(scoringUri);
+            SetClient();
 
             HttpResponseMessage response = await client.PostAsJsonAsync("", scoreRequest);
-
 
             if (response.IsSuccessStatusCode)
             {
@@ -231,6 +229,18 @@ namespace MusicResearchWebApi.Controllers
             else
             {
                 return String.Empty;
+            }
+        }
+
+        private void SetClient()
+        {
+            if (client.DefaultRequestHeaders.Authorization == null)
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", azureMLApiKey);
+            }
+            if (client.BaseAddress == null)
+            {
+                client.BaseAddress = new Uri(scoringUri);
             }
         }
 
