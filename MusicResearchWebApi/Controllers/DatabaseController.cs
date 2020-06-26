@@ -54,7 +54,7 @@ namespace MusicResearchWebApi.Controllers
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    string sql = $"SELECT Song.Id, Song.Name, Genre.Name FROM Song JOIN Genre ON Genre.Id = Song.GenreId";
+                    string sql = $"SELECT Song.Id, Song.Name, Genre.Name FROM Song JOIN Genre ON Genre.Id = Song.GenreId ORDER BY DateCreated DESC";
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
                         connection.Open();
